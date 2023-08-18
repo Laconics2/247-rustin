@@ -1,39 +1,63 @@
-use clap::{arg, Command};
+use std::path::PathBuf;
 
-fn main() {
-    let matches = Command::new("MyApp")
-        .version("1.0")
-        .author("Laconics <laconics@protonmail.com>")
-        .about("Does weird shiznit")
-        .arg(arg!(--name <VALUE>).required(true))
-        .arg(arg!(--iq <VALUE>).required(true))
-        .get_matches();
+use clap::{Parser, Subcommand};
 
-    //println!(
-    //    "Your stupid name: {:?}",
-    //    matches.get_one::<String>("name").expect("required")
-    //);
-    //println!(
-    //    "Wow thats such a low iq: {:?}",
-    //    matches.get_one::<String>("iq").expect("required")
-    //);
+#[derive(Parser)]
+#[command(author, version, about, long_about = None)]
+struct Cli {
+    //optional name to operate on 
+    name: Option<String>,
 
-    let name = matches.get_one::<String>("name").expect("required");
-    let iq = matches.get_one::<i32>("iq").expect("required");
+    //sets a custom config file
+    #[arg(short, long, value_name = "FILE")]
+    config: Option<PathBuf>,
 
-    println!("Iq is: {}", iq);
+    //turn on debugging 
+    #[arg(short, long, action = clap::ArgAction::Count)]
+    debug: u8,
 
-    let otheriq = 10;
-
-    make_sentence(name, &otheriq);
+    #[command(subcommand)]
+    command: Option<Commands>,
 }
 
-fn make_sentence(name: &String, iq: &i32) {
-    println!("Yooo what is up {name}. Lemme read your mind!!!");
-    if *iq > 100 as i32 {
-        println!("Wow you're so smart!!! IQ: {}", iq)
-    } else {
-        println!("Woooof that's a ruff one!!")
+#[derive(Subcommand)]
+enum Commands {
+    //does test things
+    //
+    Test {
+        #[arg(short, long)]
+        list: bool,
+    },
+}
+
+fn main() {
+    let cli = Cli::parse();
+
+    //check the value provided
+    if let Some(name) = cli.name.as_deref() {
+        println!("Value for name: {name}");
     }
-    //println!("Hmmmm you're IQ is so low!")
+
+    if let Some(config_path) = cli.config.as_deref() {
+        println!("Value for config: {}", config_path.display());
+    
+    }
+
+    match cli.debug {
+        0 => println!("Debug mode is off"),
+        1 => println!("Debug mode is kinda on"),
+        2 => println!("Debug mode is on"),
+        _ => println!("LUDICRIOUS SPEED!"),
+    }
+
+    match &cli.command {
+        Some(Commands::Test {list}) => {
+            if *list {
+                println!("Printin some testing lists....");
+            } else {
+                println!("Not printin testing lists....");
+            }
+        }
+        None => {}
+    }
 }
