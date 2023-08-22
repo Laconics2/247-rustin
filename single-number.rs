@@ -4,9 +4,15 @@ fn main() {
     let _vec = vec![5,6,4,6,5];
     let _vec2 = vec![4,1,2,1,2];
     let _vec3 = vec![11, 0, 0, 3, 11];
-    println!("Non Double: {}", other_num(_vec));
-    println!("Non Double: {}", other_num(_vec2));
-    println!("Non Double: {}", other_num(_vec3))
+    let _vec4 = vec![3,2,1];
+    let _vec5 = vec![1,1,2,3,4,4,3];
+//    println!("Non Double: {}", other_num(_vec));
+//    println!("Non Double: {}", other_num(_vec2));
+//    println!("Non Double: {}", other_num(_vec3));
+    //third_try(_vec4);
+    println!("Non double: {}", fourth_try(_vec5));
+    println!("Non Double: {}", fourth_try(_vec));
+    println!("Non double: {}", fourth_try(_vec2));
     
 }
 
@@ -52,4 +58,28 @@ fn other_num(nums: Vec<i32>) -> i32 {
         }
     }
     return da_nums[current_winner_index];
+}
+
+//fn third_try(nums: Vec<i32>) -> i32 {
+//    // ughhhh this is so dumbbbb
+//    let da_nums = nums;
+//    //let mut da_string = "";
+//    let mut curr_num = "";
+//    for i in 0..da_nums.len() {
+//       //curr_num = curr_num.push_str(&da_nums[i].to_string());
+//       println!("Current num is {}", curr_num);
+//    }
+//
+//    return 0;
+//
+//}
+
+fn fourth_try(nums: Vec<i32>) -> i32 {
+    //worked :|
+    let da_nums = nums;
+    let mut result = 0;
+    for i in 0..da_nums.len() {
+        result = result^da_nums[i];
+    }
+    return result;
 }
