@@ -10,10 +10,12 @@ fn main() {
 //    println!("Non Double: {}", other_num(_vec2));
 //    println!("Non Double: {}", other_num(_vec3));
     //third_try(_vec4);
-    println!("Non double: {}", fourth_try(_vec5));
-    println!("Non Double: {}", fourth_try(_vec));
-    println!("Non double: {}", fourth_try(_vec2));
-    
+    //println!("Non double: {}", fourth_try(_vec5));
+    //println!("Non Double: {}", fourth_try(_vec));
+    //println!("Non double: {}", fourth_try(_vec2));
+    println!("Non Double: {}, shoudl be 4", fifth_try(_vec));
+    println!("Non double: {}, should be 2", fifth_try(_vec5));
+    println!("Non double: {}, should be 3", fifth_try(_vec3));
 }
 
 fn single_number(nums: Vec<i32>) -> i32 {
@@ -82,4 +84,20 @@ fn fourth_try(nums: Vec<i32>) -> i32 {
         result = result^da_nums[i];
     }
     return result;
+}
+
+fn fifth_try(nums: Vec<i32>) -> i32 {
+    let da_nums = nums;
+    let mut res = da_nums[0];
+    let mut seen_arr = Vec::with_capacity(da_nums.len());
+    seen_arr.push(da_nums[0]);
+    for i in 1..da_nums.len() {
+        if seen_arr.contains(&da_nums[i]) {
+            res -= da_nums[i]
+        } else {
+            res += da_nums[i];
+            seen_arr.push(da_nums[i]);
+        }
+    }
+    return res;
 }
