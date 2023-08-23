@@ -36,6 +36,12 @@ enum Commands {
         /// can I put something here?
         something: String,
     },
+    /// Gives you an animal based on vibes
+    Animal {
+        #[arg(short, long)]
+        /// How you vibin?
+        vibe_num: i32,
+    }
 }
 
 fn main() {
@@ -71,6 +77,17 @@ fn main() {
                 println!("Shhhh! I am speaking! I want to say: {}!", something);
             } else {
                 println!("Fine I won't say anything then, rat!");
+            }
+        }
+        Some(Commands::Animal {vibe_num}) => {
+            if *vibe_num == 22 {
+                println!("VIBES ARE IMMAACULATE!! You are a chubby SEAL!!");
+            } else if *vibe_num % 3 == 0 {
+                println!("Vibes are off man, A definite RAT number");
+            } else if *vibe_num %2 == 0 {
+                println!("The vibes are on! You are a SEAL!");
+            } else {
+                println!("Gross you pleb, pick a different number!");
             }
         }
         None => {}
