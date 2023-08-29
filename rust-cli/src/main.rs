@@ -1,4 +1,5 @@
 use std::path::PathBuf;
+use std::{error::Error, process};
 
 use clap::{Parser, Subcommand};
 
@@ -41,7 +42,32 @@ enum Commands {
         #[arg(short, long)]
         /// How you vibin?
         vibe_num: i32,
+    },
+    /// Reads a specific format of CSV file
+    Readcsv {
+        #[arg(short, long)]
+        /// Path to FILE
+        path: String
     }
+}
+
+#[derive(Debug, serde::Deserialize)]
+struct Record {
+    id: String,
+    list: String,
+    color: String,
+    status: String,
+}
+
+fn read_test(path: String) -> Result<(), Box<dyn Error>> {
+    let rdr = csv::Reader::from_path(path);
+    for result in rdr?.deserialize() {
+        let record: Record = result?;
+        println!("{:?}", record);
+    }
+
+    Ok(())
+    
 }
 
 fn main() {
@@ -88,6 +114,12 @@ fn main() {
                 println!("The vibes are on! You are a SEAL!");
             } else {
                 println!("Gross you pleb, pick a different number!");
+            }
+        }
+        Some(Commands::Readcsv {path}) => {
+            if let Err(err) = read_test(path.to_string()) {
+                println!("Error Running Readcsv: {}", err);
+                process::exit(1);
             }
         }
         None => {}
