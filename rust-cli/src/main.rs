@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 use std::{error::Error, process};
+use csv::Writer;
 
 use clap::{Parser, Subcommand};
 
@@ -48,6 +49,15 @@ enum Commands {
         #[arg(short, long)]
         /// Path to FILE
         path: String
+    },
+    /// Write a new record to CSV file
+    Writecsv {
+        #[arg(short, long)]
+        path: String,
+        id: String,
+        list: String,
+        colorl: String,
+        status: String,
     }
 }
 
@@ -68,6 +78,13 @@ fn read_test(path: String) -> Result<(), Box<dyn Error>> {
 
     Ok(())
     
+}
+
+fn write_csv(item: Record, path: String) {
+    // from command line get the values
+    // creat a Record and then pass it to this funciton
+    // Write the new record to the end of the CSV file provided
+    // Ensure that there is no ID conflicts
 }
 
 fn main() {
